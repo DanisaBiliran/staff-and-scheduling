@@ -1,0 +1,94 @@
+body{
+    background-color: #f2f3f5;
+    font-size: larger;
+}
+
+
+
+table{
+    width: 90%;
+    margin: auto;
+    border-spacing: 20px;
+}
+
+table td, table tr{
+    vertical-align: top;
+    padding: 0;
+}
+
+
+/* big cells */
+.big-cells{
+    width: 30%;
+    border-radius: 8px;
+    background-color: transparent;
+    padding: 0;
+}
+
+.big-cells-div-title{
+    height: 10%;
+    background-color: #752BDF;
+    color: white;
+    padding: 5px;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid black;
+}
+
+.big-cells-div-content{
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    resize: vertical; 
+    border-radius: 0 0 8px 8px;
+    font-size: large;
+}
+
+
+/* small cells */
+.small-cells{
+    width: 30%;
+    border-radius: 5px 0 0 5px;
+}
+
+.small-cells-div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.small-cells-div-title{
+    background-color: #752BDF;
+    color: white;
+    padding: 2px;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid black;
+}
+
+.small-cells-div-content{
+    width: 100%;
+    text-wrap: balance;
+    border: 1px solid black;
+    font-size: large;
+}
+
+/* CELLS USED AS AN EMPTY SPACE CHUCHU */
+#none{
+    border: none;
+    height: 30%;
+}
+
+/* CONFIRM BUTTON */
+#confirm{
+    background-color: #00D89E;
+    padding: 5px 8px 5px 8px;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    font-size: large;
+}
+
+#confirm:hover{
+    background-color: #03aa7e;
+}

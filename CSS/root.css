@@ -1,0 +1,18 @@
+:root{
+    --primary-color: #F5F6FA;
+    --secondary-color: #752BDF;
+    --cta: #00D89E;
+}
+
+.submit-button {
+    background-color: #00D89E;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 3px 3px 5px rgb(48, 47, 47);
+}
+
+.submit-button:hover {
+    scale: 1.1;
+    box-shadow: 3px 3px 10px black;
+}

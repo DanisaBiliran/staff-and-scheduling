@@ -1,0 +1,220 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    background-color: #F5F6FA;
+}
+.body {
+    margin: 0;
+    background-color: #F5F6FA;
+    display: flex;
+    flex-direction: row; 
+}
+nav {
+    display: flex;
+    background-color: white;
+    height: 120vh;
+    width: 30%;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+}
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 90%;
+    margin: auto;
+    object-fit: cover;
+    padding: 20px;
+}
+ul a {
+    text-decoration: none;
+    list-style: none;
+    font-size: 20px;
+    margin: 1px;
+}
+ul li {
+    margin-left: 25px;
+    background-color: #00D89E;
+    border-radius: 5px;
+    width: 100%;
+    color: white;
+    padding: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+ul li:hover {
+    transition: 0.3s;
+    box-shadow: 3px 3px 8px #89718f;
+}
+.reg-pat:hover {
+    scale: 1.1;
+    box-shadow: 3px 3px 10px black;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    padding-left: 15px;
+}
+.icon {
+    display: inline-block;
+    text-align: center;
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    justify-content: center;
+    background-color: white;
+    padding: 8px;
+    margin-right: 15px;
+    border: solid;
+    cursor: pointer;
+}
+.icon:hover {
+    opacity: 80%;
+    transition: 0.3s;
+}
+input {
+    box-shadow: 1px 1px 3px black;
+    border-radius: 15px;
+    padding: 6px;
+    border: none;
+    font-size: 20px;
+    width: 60%;
+}
+
+/* EACH DIV containing data */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #F5F6FA;
+    width: 100%;
+    margin: 30px;
+    gap: 15px;
+}
+.hehe1, .hehe2, .hehe3, .hehe5, .hehe6, .hehe8 {
+    border-radius: 15px;
+    font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30%;
+    width: 30%;
+    background-color: white;
+    box-shadow: 1px 1px 3px black;
+}
+.hehe4, .hehe7 {
+    border-radius: 15px;
+    height: 30%;
+    width: 61.5%;
+    background-color: white;
+    box-shadow: 1px 1px 3px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hehe7{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: start;
+}
+
+.hehe7 button{
+    background-color: #00D89E;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 15px 5px 15px;
+    box-shadow: 1px 1px 3px black;
+    font-size: 4em;
+    margin-right: 10px;
+}
+
+.hehe7 button:hover {
+    scale: 1.1;
+    box-shadow: 3px 3px 10px black;
+}
+
+.hehe8 {
+    background-color: #752BDF;
+}
+
+img{
+    width: 20%;
+    object-fit: cover;
+    margin-right: 25px;
+}
+
+p{
+    font-size: medium;
+    color: grey;
+}
+
+
+/* portrait */
+@media (orientation: portrait) {
+    .body {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav {
+        height: auto;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; 
+        padding: 10px;
+        gap: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    ul {
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: center;
+        gap: 10px; 
+        padding: 0;
+        width: 95%;
+        margin: auto;
+        object-fit: cover;
+    }
+
+    ul li {
+        margin: 0;
+        padding: 10px;
+        text-align: center;
+        width: auto; 
+        flex: 1 1 30%; 
+    }
+    .container {
+        margin: 15px;
+        gap: 10px;
+        justify-content: center;
+    }
+    .hehe1, .hehe2, .hehe3, .hehe5, .hehe6, .hehe8 {
+        width: 90%; 
+        height: auto;
+        padding: 20px;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .hehe4, .hehe7 {
+        width: 90%; 
+        height: auto;
+        padding: 20px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .hehe7 button{
+        font-size: 2em;
+    }
+}
+
