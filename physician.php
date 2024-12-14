@@ -10,27 +10,25 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch vendors for the datalist
-$vendorQuery = "SELECT VendorID, VendorName FROM vendor";
-$vendorResult = $conn->query($vendorQuery);
+// Fetch facilities for the datalist
+$facilityQuery = "SELECT FacilityID, Name FROM facility";
+$facilityResult = $conn->query($facilityQuery);
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $itemName = $_POST['itemName'];
-    $itemType = $_POST['itemType'];
-    $vendorID = $_POST['vendor'];
-    $quantity = $_POST['quantity'];
-    $cost = $_POST['cost'];
+    $physicianName = $_POST['physicianName'];
+    $specialty = $_POST['specialty'];
+    $facilityID = $_POST['facilityID'];
 
-    $insertQuery = "INSERT INTO medicalsurgicalitem (ItemName, Type, VendorID, Quantity, cost) 
-                    VALUES ('$itemName', '$itemType', '$vendorID', '$quantity', '$cost')";
+    $insertQuery = "INSERT INTO physician (PhysicianName, Specialty, FacilityID) 
+                    VALUES ('$physicianName', '$specialty', '$facilityID')";
 
     if ($conn->query($insertQuery) === TRUE) {
-        echo "<div class='alert success'>Item added successfully!</div>";
-        // Redirect after 3 seconds
+        echo "<div class='alert success'>Physician added successfully!</div>";
+        // Redirect after 2 seconds
         echo "<script>
                 setTimeout(function() {
-                    window.location.href = 'index.php'; //PAGE TO REDIRECT
+                    window.location.href = 'index.php'; // PAGE TO REDIRECT
                 }, 2000);
             </script>";
     } else {
@@ -44,42 +42,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Medical/Surgical Item</title>
+    <title>Add Physician</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color:rgb(207, 174, 251)">
+<body style="background-color: rgb(207, 174, 251)">
     <br>
     <div class="container">
-        <h1>Item</h1>
+        <h1>Add Physician</h1>
         <form method="post" action="">
-            <!-- ITEM NAME -->
-            <label for="itemName">Item Name:</label>
-            <input type="text" name="itemName" id="itemName" required>
+            <label for="physicianName">Physician Name:</label>
+            <input type="text" name="physicianName" id="physicianName" required>
 
-            <!-- ITEM TYPE -->
-            <label for="itemType">Item Type:</label>
-            <select name="itemType" id="itemType" required>
-                <option value="Surgical">Surgical</option>
-                <option value="Medical">Medical</option>
-                <option value="Medicine">Medicine</option>
-            </select>
+            <label for="specialty">Specialty:</label>
+            <input type="text" name="specialty" id="specialty" required>
 
-            <!-- VENDOR -->
-            <label for="vendor">Vendor:</label>
-            <input type="text" name="vendor" id="vendor" list="vendors" required>
-            <datalist id="vendors">
-                <?php while($row = $vendorResult->fetch_assoc()): ?>
-                    <option value="<?= $row['VendorID'] ?>"><?= $row['VendorName'] ?></option>
+            <label for="facilityID">Facility ID:</label>
+            <input type="text" name="facilityID" id="facilityID" list="facilities" required>
+            <datalist id="facilities">
+                <?php while($row = $facilityResult->fetch_assoc()): ?>
+                    <option value="<?= $row['FacilityID'] ?>"><?= $row['Name'] ?></option>
                 <?php endwhile; ?>
             </datalist>
-
-            <!-- QUANTITY -->
-            <label for="quantity">Quantity:</label>
-            <input type="number" name="quantity" id="quantity" min="1" required>
-
-            <!-- COST -->
-            <label for="cost">Cost (Php):</label>
-            <input type="number" name="cost" id="cost" step=".01" required>
 
             <button type="submit" class="btn add-btn">Add</button>
         </form>
@@ -143,16 +126,14 @@ input[type='text']:focus, input[type='number']:focus, select:focus {
 }
 
 .btn:hover {
-    background-color: #009C7D; 
-    scale: 1.1;
-    box-shadow: 3px 3px 10px black;
+   background-color: #009C7D; /* Darker shade on hover */
 }
 
 .alert {
    padding: 10px;
    margin-top: 15px;
    border-radius: 5px;
-   text-align: center;
+   text-align: center; /* Center text in alerts */
 }
 
 .success {

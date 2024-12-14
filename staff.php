@@ -12,19 +12,18 @@ if ($conn->connect_error) {
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $vendorName = $_POST['vendorName'];
-    $contactInfo = $_POST['contactInfo'];
-    $address = $_POST['address'];
+    $staffName = $_POST['staffName'];
+    $role = $_POST['role'];
 
-    $insertQuery = "INSERT INTO vendor (VendorName, ContactInfo, Address) 
-                    VALUES ('$vendorName', '$contactInfo', '$address')";
+    $insertQuery = "INSERT INTO staff (StaffName, Role) 
+                    VALUES ('$staffName', '$role')";
 
     if ($conn->query($insertQuery) === TRUE) {
-        echo "<div class='alert success'>Item added successfully!</div>";
-        // Redirect after 3 seconds
+        echo "<div class='alert success'>Staff added successfully!</div>";
+        // Redirect after 2 seconds
         echo "<script>
                 setTimeout(function() {
-                    window.location.href = 'index.php'; //PAGE TO REDIRECT
+                    window.location.href = 'index.php'; // PAGE TO REDIRECT
                 }, 2000);
             </script>";
     } else {
@@ -38,26 +37,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vendor</title>
+    <title>Add Staff</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color:rgb(207, 174, 251)">
+<body style="background-color: rgb(207, 174, 251);">
     <br>
     <div class="container">
-        <h1>Add Vendor</h1>
+        <h1>Add Staff</h1>
         <form method="post" action="">
-            <label for="vendorName">Vendor Name:</label>
-            <input type="text" name="vendorName" id="vendorName" required>
+            <label for="staffName">Staff Name:</label>
+            <input type="text" name="staffName" id="staffName" required>
 
-            <label for="contactInfo">Contact Info:</label>
-            <input type="text" name="contactInfo" id="contactInfo" required>
-
-            <label for="address">Address:</label>
-            <input type="text" name="address" id="address" required>
+            <label for="role">Role:</label>
+            <select name="role" id="role" required>
+                <option value="Nurse">Nurse</option>
+                <option value="IT">IT</option>
+                <option value="Registrar">Registrar</option>
+            </select>
 
             <button type="submit" class="btn add-btn">Add</button>
         </form>
     </div>
+    <br>
 </body>
 </html>
 
@@ -86,20 +87,27 @@ label {
     font-weight: bold;
 }
 
-input[type='text'] {
-    width: calc(100% - 20px);
+input[type='text'], select {
     padding: 12px;
     margin-top: 5px;
     border: 2px solid rgb(177, 127, 248);
     border-radius: 5px;
 }
 
-input[type='text']:focus {
+input[type='text'] {
+    width: calc(95% - 20px);
+}
+
+select {
+    width: calc(100% - 20px);
+}
+
+input[type='text']:focus, select:focus {
     border-color: #752BDF;
 }
 
 .btn {
-    background-color: rgb(14, 192, 14);
+    background-color:rgb(14, 192, 14);
     color: white;
     border: none;
     padding: 12px 20px;
@@ -109,9 +117,7 @@ input[type='text']:focus {
 }
 
 .btn:hover {
-    background-color: #009C7D; 
-    scale: 1.1;
-    box-shadow: 3px 3px 10px black;
+   background-color: #009C7D; /* Darker shade on hover */
 }
 
 .alert {

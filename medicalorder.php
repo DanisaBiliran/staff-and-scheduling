@@ -9,7 +9,7 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-use mvch;
+
 
 // Fetch items for the dropdown
 $itemQuery = "SELECT ItemID, ItemName FROM medicalsurgicalitem WHERE Type='Medicine'";
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Order Form</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color: #F5F6FA;">
+<body style="background-color: rgb(207, 174, 251);">
     <br>
     <div class="container">
         <h1>Order Form</h1>
@@ -125,7 +125,7 @@ body {
     max-width: 600px;
     margin: auto;
     padding: 30px;
-    background-color: white;
+    background-color:white;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
@@ -145,7 +145,7 @@ label {
 input[type='text'], input[type='number'], select {
     padding: 12px;
     margin-top: 5px;
-    border: 2px solid #E0E0E0;
+    border: 2px solid rgb(177, 127, 248);
     border-radius: 5px;
     transition: border-color 0.3s ease;
 }
@@ -164,7 +164,7 @@ input[type='text']:focus, input[type='number']:focus, select:focus {
 
 /* BUTTONS */
 .btn {
-    background-color: #00D89E;
+    background-color:rgb(14, 192, 14);
     color: white;
     border: none;
     padding: 12px 20px;

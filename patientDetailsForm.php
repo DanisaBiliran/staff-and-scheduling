@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Add Patient</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color: rgb(231, 232, 236);">
+<body style="background-color:rgb(207, 174, 251)">
     <br>
     <div class="container">
         <h1>Add Patient</h1>
@@ -137,7 +137,7 @@ label {
 input[type='text'], input[type='date'], input[type='number'], select, textarea {
     padding: 12px;
     margin-top: 5px;
-    border: 2px solid #E0E0E0;
+    border: 2px solid rgb(177, 127, 248);
     border-radius: 5px;
 }
 
@@ -154,7 +154,7 @@ input[type='text']:focus, input[type='date']:focus, input[type='number']:focus, 
 }
 
 .btn {
-    background-color: #00D89E;
+    background-color:rgb(14, 192, 14);
     color: white;
     border: none;
     padding: 12px 20px;
