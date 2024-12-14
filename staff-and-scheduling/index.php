@@ -182,13 +182,14 @@
         const inventoryPieChart = new Chart(ctxInventory, {
             type: 'pie',
             data: {
-                labels: ['Medical', 'Surgical'],
+                labels: ['Medical', 'Surgical', 'Medicine'],
                 datasets: [{
                     label: 'Inventory Distribution',
                     data: [<?php echo $medical_count; ?>, <?php echo $surgical_count; ?>],
                     backgroundColor: [
                         '#00D89E',
                         '#752BDF'
+
                     ],
                     borderColor: [
                         '#00D89E',

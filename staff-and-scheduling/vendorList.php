@@ -5,9 +5,9 @@
     $search = isset($_GET['search']) ? $_GET['search'] : '';
 
     // Modify the SQL query to include filtering
-    $sql = "SELECT * FROM physician";
+    $sql = "SELECT * FROM vendor";
     if (!empty($search)) {
-        $sql .= " WHERE PhysicianID LIKE '%$search%' OR PhysicianName LIKE '%$search%' or Specialty LIKE '%$search%'";
+        $sql .= " WHERE VendorID LIKE '%$search%' OR VendorName LIKE '%$search%'";
     }
 
     $result = $conn->query($sql);
@@ -17,7 +17,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Physician List</title>
+        <title>Vendor List</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -123,11 +123,14 @@
                 color: #FF0000;
                 text-decoration: none;
             }
+            a{
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
         <div class="table-container">
-            <h2 class="table-title">Physician List</h2>
+            <h2 class="table-title">Vendor List</h2>
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
@@ -135,14 +138,14 @@
                     <button type="submit">Search</button>
                 </div>
             </form>
-
+            <a href="index.php">Go Back</a>
             <!-- Patient Table -->
             <table>
                 <tr>
-                    <th>Physician ID</th>
-                    <th>Physician Name</th>
-                    <th>Specialty</th>
-                    <th>Facility Assigned</th>
+                    <th>Vendor ID</th>
+                    <th>Vendor Name</th>
+                    <th>Contact Info</th>
+                    <th>Address</th>
                     <th>Action</th>
                 </tr>
                 <?php
@@ -150,10 +153,10 @@
                         while ($row = $result->fetch_assoc()) {
                             echo "
                                 <tr>
-                                    <td>$row[PhysicianID]</td>
-                                    <td>$row[PhysicianName]</td>
-                                    <td>$row[Specialty]</td>
-                                    <td>$row[FacilityID]</td>
+                                    <td>$row[VendorID]</td>
+                                    <td>$row[VendorName]</td>
+                                    <td>$row[ContactInfo]</td>
+                                    <td>$row[Address]</td>
                                     <td>
                                         <a class='btn view' href=''>View</a>
                                         <a class='btn update' href=''>Update</a> 
@@ -163,7 +166,7 @@
                             ";
                         }
                     } else {
-                        echo "<tr><td colspan='6'>No results found</td></tr>";
+                        echo "<tr><td colspan='4'>No results found</td></tr>";
                     }
                 ?>
             </table>

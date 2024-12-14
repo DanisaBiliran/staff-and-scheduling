@@ -10,11 +10,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch wards for the datalist
 $wardQuery = "SELECT WardID, WardName FROM ward";
 $wardResult = $conn->query($wardQuery);
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $patientName = $_POST['patientName'];
     $dateOfBirth = $_POST['dateOfBirth'];
@@ -33,11 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($conn->query($insertQuery) === TRUE) {
         echo "<div class='alert success'>Patient added successfully!</div>";
-        // Redirect after 2 seconds
+        // Redirect after 1 seconds
         echo "<script>
                 setTimeout(function() {
                     window.location.href = 'index.php'; // PAGE TO REDIRECT
-                }, 2000);
+                }, 1000);
             </script>";
     } else {
         echo "<div class='alert error'>Error: " . $insertQuery . "<br>" . $conn->error . "</div>";
@@ -53,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Add Patient</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color:rgb(207, 174, 251)">
+<body style="background-color: rgb(231, 232, 236);">
     <br>
     <div class="container">
         <h1>Add Patient</h1>
@@ -110,81 +108,81 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </html>
 
 <style>
-body {
-    font-family: 'Arial', sans-serif;
-}
+    body {
+        font-family: 'Arial', sans-serif;
+    }
 
-.container {
-    max-width: 600px;
-    margin: auto;
-    padding: 30px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
+    .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
 
-h1 {
-    text-align: center;
-    color: #752BDF;
-}
+    h1 {
+        text-align: center;
+        color: #752BDF;
+    }
 
-label {
-    display: block;
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    input[type='text'], input[type='date'], input[type='number'], select, textarea {
+        padding: 12px;
+        margin-top: 5px;
+        border: 2px solid #E0E0E0;
+        border-radius: 5px;
+    }
+
+    input[type='text'], input[type='date'], input[type='number'], textarea {
+        width: calc(95% - 20px);
+    }
+
+    select {
+        width: calc(100% - 20px);
+    }
+
+    input[type='text']:focus, input[type='date']:focus, input[type='number']:focus, select:focus, textarea:focus {
+        border-color: #752BDF;
+    }
+
+    .btn {
+        background-color: #00D89E;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        margin-top: 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .btn:hover {
+        background-color: #009C7D; 
+        scale: 1.1;
+        box-shadow: 3px 3px 10px black;
+    }
+
+    .alert {
+    padding: 10px;
     margin-top: 15px;
-    font-weight: bold;
-}
-
-input[type='text'], input[type='date'], input[type='number'], select, textarea {
-    padding: 12px;
-    margin-top: 5px;
-    border: 2px solid rgb(177, 127, 248);
     border-radius: 5px;
-}
+    text-align: center; /* Center text in alerts */
+    }
 
-input[type='text'], input[type='date'], input[type='number'], textarea {
-    width: calc(95% - 20px);
-}
+    .success {
+    background-color: #d4edda; 
+    color: #155724; 
+    border-color: #c3e6cb; 
+    }
 
-select {
-    width: calc(100% - 20px);
-}
-
-input[type='text']:focus, input[type='date']:focus, input[type='number']:focus, select:focus, textarea:focus {
-    border-color: #752BDF;
-}
-
-.btn {
-    background-color:rgb(14, 192, 14);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    margin-top: 20px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.btn:hover {
-    background-color: #009C7D; 
-    scale: 1.1;
-    box-shadow: 3px 3px 10px black;
-}
-
-.alert {
-   padding: 10px;
-   margin-top: 15px;
-   border-radius: 5px;
-   text-align: center; /* Center text in alerts */
-}
-
-.success {
-   background-color: #d4edda; 
-   color: #155724; 
-   border-color: #c3e6cb; 
-}
-
-.error {
-   background-color: #f8d7da; 
-   color: #721c24; 
-   border-color: #f5c6cb; 
-}
+    .error {
+    background-color: #f8d7da; 
+    color: #721c24; 
+    border-color: #f5c6cb; 
+    }
 </style>

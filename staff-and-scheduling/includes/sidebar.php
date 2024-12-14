@@ -27,13 +27,13 @@ $menuItems = [
     'href' => '/staff-and-scheduling/patientList.php',
   ],
   [
-    'icon' => 'cart',
-    'label' => 'order',
+    'icon' => 'list',
+    'label' => 'Orders',
     'href' => '/staff-and-scheduling/orderList.php',
   ],
   [
-    'icon' => 'inventory',
-    'label' => 'inventory',
+    'icon' => 'list',
+    'label' => 'Inventory',
     'href' => '/staff-and-scheduling/itemList.php',
   ],
   [
@@ -42,12 +42,12 @@ $menuItems = [
     'href' => '/staff-and-scheduling/physicianList.php',
   ],
   [
-    'icon' => 'staff',
-    'label' => 'staff',
+    'icon' => 'list',
+    'label' => 'Staffs',
     'href' => '/staff-and-scheduling/staffList.php',
   ],
   [
-    'icon' => 'Vendors',
+    'icon' => 'list',
     'label' => 'Vendors',
     'href' => '/staff-and-scheduling/vendorList.php',
   ],

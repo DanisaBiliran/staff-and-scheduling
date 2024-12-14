@@ -126,6 +126,9 @@
                 color: #FF0000;
                 text-decoration: none;
             }
+            a{
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -138,7 +141,7 @@
                     <button type="submit">Search</button>
                 </div>
             </form>
-
+            <a href="index.php">Go Back</a>
             <!-- Patient Table -->
             <table>
                 <tr>
@@ -162,8 +165,8 @@
                                     <td>$row[PatientName]</td>
                                     <td>$row[Status]</td>
                                     <td>
-                                        <a class='btn view' href=''>View</a>
-                                        <a class='btn update' href=''>Update</a> 
+                                        <a class='btn view' href='orderDetails.php?order_id={$row['OrderID']}'>View</a>
+                                        <a class='btn update' href='updateOrder.php?order_id={$row['OrderID']}'>Update</a> 
                                         <a class='btn delete' href=''>Delete</a>
                                     </td>
                                 </tr>

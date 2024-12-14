@@ -5,12 +5,9 @@
     $search = isset($_GET['search']) ? $_GET['search'] : '';
 
     // Modify the SQL query to include filtering
-    $sql = "SELECT m.*, v.VendorName
-        FROM medicalsurgicalitem m
-        JOIN Vendor v ON m.VendorID = v.VendorID";
-
+    $sql = "SELECT * FROM physician";
     if (!empty($search)) {
-        $sql .= " WHERE ItemName LIKE '%$search%' OR Type LIKE '%$search%' OR VendorName LIKE '%$search%'";
+        $sql .= " WHERE PhysicianID LIKE '%$search%' OR PhysicianName LIKE '%$search%' or Specialty LIKE '%$search%'";
     }
 
     $result = $conn->query($sql);
@@ -20,7 +17,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Inventory</title>
+        <title>Physician List</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -43,8 +40,8 @@
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 width: 85%;
-                overflow-x: auto;
                 height: 80%;
+                overflow-x: auto;
             }
 
             .searchbox {
@@ -126,28 +123,29 @@
                 color: #FF0000;
                 text-decoration: none;
             }
+            a{
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
         <div class="table-container">
-            <h2 class="table-title">Inventory</h2>
-            
+            <h2 class="table-title">Physician List</h2>
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
-                    <input type="text" name="search" id="search" placeholder="Search items..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" name="search" id="search" placeholder="Search patients..." value="<?php echo htmlspecialchars($search); ?>">
                     <button type="submit">Search</button>
                 </div>
             </form>
-
+            <a href="index.php">Go Back</a>
+            <!-- Patient Table -->
             <table>
                 <tr>
-                    <th>Item ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Vendor</th>
-                    <th>Quantity</th>
-                    <th>Cost</th>
+                    <th>Physician ID</th>
+                    <th>Physician Name</th>
+                    <th>Specialty</th>
+                    <th>Facility Assigned</th>
                     <th>Action</th>
                 </tr>
                 <?php
@@ -155,12 +153,10 @@
                         while ($row = $result->fetch_assoc()) {
                             echo "
                                 <tr>
-                                    <td>$row[ItemID]</td>
-                                    <td>$row[ItemName]</td>
-                                    <td>$row[Type]</td>
-                                    <td>$row[VendorName]</td>
-                                    <td>$row[Quantity]</td>
-                                    <td>$row[cost]</td>
+                                    <td>$row[PhysicianID]</td>
+                                    <td>$row[PhysicianName]</td>
+                                    <td>$row[Specialty]</td>
+                                    <td>$row[FacilityID]</td>
                                     <td>
                                         <a class='btn view' href=''>View</a>
                                         <a class='btn update' href=''>Update</a> 
@@ -170,7 +166,7 @@
                             ";
                         }
                     } else {
-                        echo "<tr><td colspan='7'>No results found</td></tr>";
+                        echo "<tr><td colspan='6'>No results found</td></tr>";
                     }
                 ?>
             </table>

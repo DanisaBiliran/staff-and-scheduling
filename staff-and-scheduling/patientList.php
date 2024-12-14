@@ -5,9 +5,11 @@
     $search = isset($_GET['search']) ? $_GET['search'] : '';
 
     // Modify the SQL query to include filtering
-    $sql = "SELECT * FROM vendor";
+    $sql = "SELECT p.*, w.WardName
+        FROM patient p
+        JOIN ward w ON p.WardID = w.WardID";
     if (!empty($search)) {
-        $sql .= " WHERE VendorID LIKE '%$search%' OR VendorName LIKE '%$search%'";
+        $sql .= " WHERE PatientName LIKE '%$search%' OR PatientID LIKE '%$search%' or Gender LIKE '%$search%'";
     }
 
     $result = $conn->query($sql);
@@ -17,7 +19,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Vendor List</title>
+        <title>Patient List</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -123,11 +125,15 @@
                 color: #FF0000;
                 text-decoration: none;
             }
+
+            a{
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
         <div class="table-container">
-            <h2 class="table-title">Vendor List</h2>
+            <h2 class="table-title">Patient Information</h2>
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
@@ -136,13 +142,16 @@
                 </div>
             </form>
 
+            <a href="index.php">Go Back</a>
+
             <!-- Patient Table -->
             <table>
                 <tr>
-                    <th>Vendor ID</th>
-                    <th>Vendor Name</th>
-                    <th>Contact Info</th>
-                    <th>Address</th>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Ward Assigned</th>
                     <th>Action</th>
                 </tr>
                 <?php
@@ -150,23 +159,36 @@
                         while ($row = $result->fetch_assoc()) {
                             echo "
                                 <tr>
-                                    <td>$row[VendorID]</td>
-                                    <td>$row[VendorName]</td>
-                                    <td>$row[ContactInfo]</td>
-                                    <td>$row[Address]</td>
+                                    <td>{$row['PatientID']}</td>
+                                    <td>{$row['PatientName']}</td>
+                                    <td>{$row['DateOfBirth']}</td>
+                                    <td>{$row['Gender']}</td>
+                                    <td>{$row['WardName']}</td>
                                     <td>
-                                        <a class='btn view' href=''>View</a>
-                                        <a class='btn update' href=''>Update</a> 
-                                        <a class='btn delete' href=''>Delete</a>
+                                        <a class='btn view' href='patientDetails.php?patient_id={$row['PatientID']}'>View</a>
+                                        <a class='btn update' href='updatePatient.php?patient_id={$row['PatientID']}'>Update</a> 
+                                        <a class='btn delete' href='deletePatient.php?id={$row['PatientID']}' onclick=\"return confirm('Are you sure you want to delete this patient?')\">Delete</a>
                                     </td>
                                 </tr>
                             ";
                         }
+
                     } else {
-                        echo "<tr><td colspan='4'>No results found</td></tr>";
+                        echo "<tr><td colspan='6'>No results found</td></tr>";
                     }
                 ?>
             </table>
         </div>
     </body>
 </html>
+
+<script>
+    document.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            if (!confirm('Are you sure you want to delete this patient?')) {
+                e.preventDefault(); // Prevent navigation if the user cancels
+            }
+        });
+    });
+</script>
+

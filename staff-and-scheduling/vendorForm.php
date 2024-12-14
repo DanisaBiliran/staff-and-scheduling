@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<script>
                 setTimeout(function() {
                     window.location.href = 'index.php'; //PAGE TO REDIRECT
-                }, 2000);
+                }, 1000);
             </script>";
     } else {
         echo "<div class='alert error'>Error: " . $insertQuery . "<br>" . $conn->error . "</div>";
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Add Vendor</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color:rgb(207, 174, 251)">
+<body style="background-color: #F5F6FA;">
     <br>
     <div class="container">
         <h1>Add Vendor</h1>
@@ -90,7 +90,7 @@ input[type='text'] {
     width: calc(100% - 20px);
     padding: 12px;
     margin-top: 5px;
-    border: 2px solid rgb(177, 127, 248);
+    border: 2px solid #E0E0E0;
     border-radius: 5px;
 }
 
@@ -99,7 +99,7 @@ input[type='text']:focus {
 }
 
 .btn {
-    background-color: rgb(14, 192, 14);
+    background-color: #00D89E;
     color: white;
     border: none;
     padding: 12px 20px;

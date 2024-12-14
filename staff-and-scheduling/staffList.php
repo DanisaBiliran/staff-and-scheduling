@@ -5,11 +5,9 @@
     $search = isset($_GET['search']) ? $_GET['search'] : '';
 
     // Modify the SQL query to include filtering
-    $sql = "SELECT p.*, w.WardName
-        FROM patient p
-        JOIN ward w ON p.WardID = w.WardID";
+    $sql = "SELECT * FROM staff";
     if (!empty($search)) {
-        $sql .= " WHERE PatientName LIKE '%$search%' OR PatientID LIKE '%$search%' or Gender LIKE '%$search%'";
+        $sql .= " WHERE StaffName LIKE '%$search%' OR Role LIKE '%$search%'";
     }
 
     $result = $conn->query($sql);
@@ -19,7 +17,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Patient List</title>
+        <title>Staff List</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -125,11 +123,14 @@
                 color: #FF0000;
                 text-decoration: none;
             }
+            a{
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
         <div class="table-container">
-            <h2 class="table-title">Patient Information</h2>
+            <h2 class="table-title">Staff List</h2>
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
@@ -137,15 +138,13 @@
                     <button type="submit">Search</button>
                 </div>
             </form>
-
+            <a href="index.php">Go Back</a>
             <!-- Patient Table -->
             <table>
                 <tr>
-                    <th>Patient ID</th>
-                    <th>Patient Name</th>
-                    <th>Date of Birth</th>
-                    <th>Gender</th>
-                    <th>Ward Assigned</th>
+                    <th>Staff ID</th>
+                    <th>Staff Name</th>
+                    <th>Role</th>
                     <th>Action</th>
                 </tr>
                 <?php
@@ -153,13 +152,11 @@
                         while ($row = $result->fetch_assoc()) {
                             echo "
                                 <tr>
-                                    <td>$row[PatientID]</td>
-                                    <td>$row[PatientName]</td>
-                                    <td>$row[DateOfBirth]</td>
-                                    <td>$row[Gender]</td>
-                                    <td>$row[WardName]</td>
+                                    <td>$row[StaffID]</td>
+                                    <td>$row[StaffName]</td>
+                                    <td>$row[Role]</td>
                                     <td>
-                                        <a class='btn view' href='medicalHistory.html'>View</a>
+                                        <a class='btn view' href=''>View</a>
                                         <a class='btn update' href=''>Update</a> 
                                         <a class='btn delete' href=''>Delete</a>
                                     </td>
@@ -167,7 +164,7 @@
                             ";
                         }
                     } else {
-                        echo "<tr><td colspan='6'>No results found</td></tr>";
+                        echo "<tr><td colspan='4'>No results found</td></tr>";
                     }
                 ?>
             </table>
