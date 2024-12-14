@@ -7,6 +7,11 @@ $menuItems = [
     'href' => '/staff-and-scheduling/index.php',
   ],
   [
+    'icon' => 'airplay',
+    'label' => 'Create Patient',
+    'href' => '/staff-and-scheduling/patientDetailsForm.php',
+  ],
+  [
     'icon' => 'table-2',
     'label' => 'Wards',
     'href' => '/staff-and-scheduling/wards.php',
@@ -16,11 +21,7 @@ $menuItems = [
     'label' => 'Scheduling',
     'href' => '/staff-and-scheduling/scheduling.php',
   ],
-  [
-    'icon' => 'contact',
-    'label' => 'Create Patients',
-    'href' => '/staff-and-scheduling/patients.php',
-  ],
+
   [
     'icon' => 'list',
     'label' => 'Patient list',
@@ -28,7 +29,7 @@ $menuItems = [
   ],
   [
     'icon' => 'list',
-    'label' => 'Orders',
+    'label' => 'Order',
     'href' => '/staff-and-scheduling/orderList.php',
   ],
   [
@@ -43,7 +44,7 @@ $menuItems = [
   ],
   [
     'icon' => 'list',
-    'label' => 'Staffs',
+    'label' => 'Staff',
     'href' => '/staff-and-scheduling/staffList.php',
   ],
   [

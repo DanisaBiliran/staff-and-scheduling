@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="bg-base-200">
   <main class="container mx-auto h-screen w-full flex justify-center items-center">
     <div class="max-w-sm w-full border bg-base-100 rounded-lg flex flex-col items-center p-6">
+    <h1 style="font-size: 1.2em; text-align: center; font-weight: bold;">Mountain View Community Hospital</h1>
       <div class="flex flex-col items-center mb-4">
         <i data-lucide="log-in" class="h-8 w-8 text-primary"></i>
         <h1 class="text-xl font-bold">Welcome!</h1>
