@@ -1,4 +1,5 @@
 <?php
+    include 'sessioncheck.php';
     include 'conn.php';
 
     // Capture the search query if available
@@ -137,7 +138,7 @@
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
-                    <input type="text" name="search" id="search" placeholder="Search patients..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" name="search" id="search" placeholder="Search orders..." value="<?php echo htmlspecialchars($search); ?>">
                     <button type="submit">Search</button>
                 </div>
             </form>
@@ -167,7 +168,7 @@
                                     <td>
                                         <a class='btn view' href='orderDetails.php?order_id={$row['OrderID']}'>View</a>
                                         <a class='btn update' href='updateOrder.php?order_id={$row['OrderID']}'>Update</a> 
-                                        <a class='btn delete' href=''>Delete</a>
+                                        <a class='btn delete' href='deleteOrder.php?id={$row['OrderID']} onclick=\"return confirm('Are you sure you want to delete this order?')\"'>Delete</a>
                                     </td>
                                 </tr>
                             ";
@@ -178,5 +179,14 @@
                 ?>
             </table>
         </div>
-    </body>
+    </body> 
 </html>
+<script>
+    document.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            if (!confirm('Are you really sure?')) {
+                e.preventDefault(); // Prevent navigation if the user cancels
+            }
+        });
+    });
+</script>

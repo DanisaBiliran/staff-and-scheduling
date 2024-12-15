@@ -1,4 +1,5 @@
 <?php
+include 'sessioncheck.php';
 include 'conn.php';
 
 // Get the PatientID from the URL

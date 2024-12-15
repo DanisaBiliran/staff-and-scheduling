@@ -1,4 +1,5 @@
 <?php
+    include 'sessioncheck.php';
     include 'conn.php';
 
     // Capture the search query if available

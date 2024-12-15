@@ -1,4 +1,5 @@
 <?php
+    include 'sessioncheck.php';
     include 'conn.php';
 
     // Capture the search query if available
@@ -171,7 +172,7 @@
                                     </td>
                                 </tr>
                             ";
-                        }
+                        } 
 
                     } else {
                         echo "<tr><td colspan='6'>No results found</td></tr>";
@@ -185,7 +186,7 @@
 <script>
     document.querySelectorAll('.delete').forEach(btn => {
         btn.addEventListener('click', function (e) {
-            if (!confirm('Are you sure you want to delete this patient?')) {
+            if (!confirm('Are you really sure?')) {
                 e.preventDefault(); // Prevent navigation if the user cancels
             }
         });

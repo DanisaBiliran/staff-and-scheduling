@@ -1,4 +1,5 @@
 <?php
+    include 'sessioncheck.php';
     include 'conn.php';
 
     // Capture the search query if available
@@ -134,7 +135,7 @@
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
-                    <input type="text" name="search" id="search" placeholder="Search patients..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" name="search" id="search" placeholder="Search staff..." value="<?php echo htmlspecialchars($search); ?>">
                     <button type="submit">Search</button>
                 </div>
             </form>
@@ -156,9 +157,9 @@
                                     <td>$row[StaffName]</td>
                                     <td>$row[Role]</td>
                                     <td>
-                                        <a class='btn view' href=''>View</a>
-                                        <a class='btn update' href=''>Update</a> 
-                                        <a class='btn delete' href=''>Delete</a>
+                                        <a class='btn view' href='staffDetails.php?staff_id={$row['StaffID']}'>View</a>
+                                        <a class='btn update' href='updateStaff.php?staff_id={$row['StaffID']}'>Update</a> 
+                                        <a class='btn delete' href='deleteStaff.php?id={$row['StaffID']}' onclick=\"return confirm('Are you sure you want to delete this staff?')\">Delete</a>
                                     </td>
                                 </tr>
                             ";
@@ -171,3 +172,13 @@
         </div>
     </body>
 </html>
+
+<script>
+    document.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            if (!confirm('Are you really sure?')) {
+                e.preventDefault(); // Prevent navigation if the user cancels
+            }
+        });
+    });
+</script>

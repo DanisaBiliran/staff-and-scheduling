@@ -2,25 +2,45 @@
 include 'sessioncheck.php';
 include 'conn.php';
 
+// Check if VendorID is provided in the URL
+if (!isset($_GET['vendor_id'])) {
+    echo "<div class='alert error'>No Vendor ID provided!</div>";
+    exit;
+}
+
+$vendorID = $_GET['vendor_id'];
+
+// Fetch existing vendor data
+$vendorQuery = "SELECT * FROM vendor WHERE VendorID = '$vendorID'";
+$vendorResult = $conn->query($vendorQuery);
+
+if ($vendorResult->num_rows == 0) {
+    echo "<div class='alert error'>Vendor not found!</div>";
+    exit;
+}
+
+$vendor = $vendorResult->fetch_assoc();
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $vendorName = $_POST['vendorName'];
     $contactInfo = $_POST['contactInfo'];
     $address = $_POST['address'];
 
-    $insertQuery = "INSERT INTO vendor (VendorName, ContactInfo, Address) 
-                    VALUES ('$vendorName', '$contactInfo', '$address')";
+    $updateQuery = "UPDATE vendor 
+                    SET VendorName = '$vendorName', ContactInfo = '$contactInfo', Address = '$address' 
+                    WHERE VendorID = '$vendorID'";
 
-    if ($conn->query($insertQuery) === TRUE) {
-        echo "<div class='alert success'>Item added successfully!</div>";
-        // Redirect after 3 seconds
+    if ($conn->query($updateQuery) === TRUE) {
+        echo "<div class='alert success'>Vendor updated successfully!</div>";
+        // Redirect after 1 second
         echo "<script>
                 setTimeout(function() {
-                    window.location.href = 'index.php'; //PAGE TO REDIRECT
+                    window.location.href = 'index.php'; // PAGE TO REDIRECT
                 }, 1000);
             </script>";
     } else {
-        echo "<div class='alert error'>Error: " . $insertQuery . "<br>" . $conn->error . "</div>";
+        echo "<div class='alert error'>Error: " . $updateQuery . "<br>" . $conn->error . "</div>";
     }
 }
 ?>
@@ -30,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vendor</title>
+    <title>Update Vendor</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body style="background-color: #F5F6FA;">
@@ -39,18 +59,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     <br>
     <div class="container">
-        <h1>Add Vendor</h1>
+        <h1>Update Vendor</h1>
         <form method="post" action="">
             <label for="vendorName">Vendor Name:</label>
-            <input type="text" name="vendorName" id="vendorName" required>
+            <input type="text" name="vendorName" id="vendorName" value="<?= htmlspecialchars($vendor['VendorName']) ?>" required>
 
             <label for="contactInfo">Contact Info:</label>
-            <input type="text" name="contactInfo" id="contactInfo" required>
+            <input type="text" name="contactInfo" id="contactInfo" value="<?= htmlspecialchars($vendor['ContactInfo']) ?>" required>
 
             <label for="address">Address:</label>
-            <input type="text" name="address" id="address" required>
+            <input type="text" name="address" id="address" value="<?= htmlspecialchars($vendor['Address']) ?>" required>
 
-            <button type="submit" class="btn add-btn">Add</button>
+            <button type="submit" class="btn add-btn">Update</button>
         </form>
     </div>
 </body>

@@ -1,4 +1,5 @@
 <?php
+    include 'sessioncheck.php';
     include 'conn.php';
 
     // Capture the search query if available
@@ -166,8 +167,8 @@
                                     <td>$row[cost]</td>
                                     <td>
                                         <a class='btn view' href='itemDetails.php?item_id={$row['ItemID']}'>View</a>
-                                        <a class='btn update' href=''>Update</a> 
-                                        <a class='btn delete' href=''>Delete</a>
+                                        <a class='btn update' href='updateItem.php?item_id={$row['ItemID']}'>Update</a> 
+                                        <a class='btn delete' href='deleteItem.php?id={$row['ItemID']}' onclick=\"return confirm('Are you sure you want to delete this item?')\">Delete</a>
                                     </td>
                                 </tr>
                             ";
@@ -180,3 +181,12 @@
         </div>
     </body>
 </html>
+<script> 
+    document.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            if (!confirm('Are you really sure?')) {
+                e.preventDefault(); // Prevent navigation if the user cancels
+            }
+        });
+    });
+</script>

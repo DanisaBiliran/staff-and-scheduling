@@ -1,14 +1,16 @@
 <?php
-$host = 'localhost';
-$db = 'mvch';
-$user = 'root';
-$pass = '';
+include 'sessioncheck.php';
+include 'conn.php';
+// $host = 'localhost';
+// $db = 'mvch';
+// $user = 'root';
+// $pass = '';
 
-$conn = new mysqli($host, $user, $pass, $db);
+// $conn = new mysqli($host, $user, $pass, $db);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// if ($conn->connect_error) {
+//     die("Connection failed: " . $conn->connect_error);
+// }
 
 
 // Fetch items for the dropdown

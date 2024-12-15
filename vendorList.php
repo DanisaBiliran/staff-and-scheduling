@@ -1,4 +1,5 @@
 <?php
+    include 'sessioncheck.php';
     include 'conn.php';
 
     // Capture the search query if available
@@ -134,7 +135,7 @@
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
-                    <input type="text" name="search" id="search" placeholder="Search patients..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" name="search" id="search" placeholder="Search vendors..." value="<?php echo htmlspecialchars($search); ?>">
                     <button type="submit">Search</button>
                 </div>
             </form>
@@ -158,18 +159,27 @@
                                     <td>$row[ContactInfo]</td>
                                     <td>$row[Address]</td>
                                     <td>
-                                        <a class='btn view' href=''>View</a>
-                                        <a class='btn update' href=''>Update</a> 
-                                        <a class='btn delete' href=''>Delete</a>
+                                        <a class='btn view' href='vendorDetails.php?vendor_id={$row['VendorID']}'>View</a>
+                                        <a class='btn update' href='updateVendor.php?vendor_id={$row['VendorID']}'>Update</a> 
+                                        <a class='btn delete' href='deleteVendor.php?id={$row['VendorID']}' onclick=\"return confirm('Are you sure you want to delete this vendor?')\">Delete</a>
                                     </td>
                                 </tr>
                             ";
                         }
                     } else {
-                        echo "<tr><td colspan='4'>No results found</td></tr>";
+                        echo "<tr><td colspan='5'>No results found</td></tr>";
                     }
                 ?>
             </table>
         </div>
     </body>
 </html>
+<script>
+    document.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            if (!confirm('Are you really sure?')) {
+                e.preventDefault(); // Prevent navigation if the user cancels
+            }
+        });
+    });
+</script>

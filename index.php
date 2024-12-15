@@ -1,8 +1,10 @@
 <?php
-  include("chuchu.php");
+  include 'sessioncheck.php';
+  include ("chuchu.php");
   include 'conn.php';
+  
+
 ?>
-<?php session_start() ?>
 
 <!DOCTYPE html>
 <html lang="en" data-theme="light">

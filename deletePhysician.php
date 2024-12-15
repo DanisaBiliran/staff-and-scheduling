@@ -3,27 +3,27 @@ include 'sessioncheck.php';
 include 'conn.php';
 
 if (isset($_GET['id'])) {
-    $patientID = intval($_GET['id']); 
+    $physicianID = intval($_GET['id']); 
 
 
-    $deleteQuery = "DELETE FROM patient WHERE PatientID = $patientID";
+    $deleteQuery = "DELETE FROM physician WHERE PhysicianID = $physicianID";
 
     if ($conn->query($deleteQuery) === TRUE) {
         echo "<script>
-                alert('Patient deleted successfully!');
+                alert('Physician deleted successfully!');
                 window.location.href = 'index.php'; // Redirect to the patient list
               </script>";
     } else {
 
         echo "<script>
-                alert('Error deleting patient: {$conn->error}');
-                window.location.href = 'index.php'; // Redirect to the patient list
+                alert('Error deleting physician: {$conn->error}');
+                window.location.href = 'index.php'; // Redirect to the physician list
               </script>";
     }
 } else {
 
     echo "<script>
-            alert('No patient ID provided.');
+            alert('No physician ID provided.');
             window.location.href = 'index.php';
           </script>";
 }

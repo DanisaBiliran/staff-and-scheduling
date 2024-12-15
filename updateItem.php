@@ -2,9 +2,31 @@
 include 'sessioncheck.php';
 include 'conn.php';
 
+// Check if the item ID is provided
+if (!isset($_GET['item_id']) || empty($_GET['item_id'])) {
+    header("Location: inventory.php");
+    exit();
+}
+
+$itemID = $_GET['item_id'];
+
 // Fetch vendors for the datalist
 $vendorQuery = "SELECT VendorID, VendorName FROM vendor";
 $vendorResult = $conn->query($vendorQuery);
+
+// Fetch current item details
+$itemQuery = "SELECT * FROM medicalsurgicalitem WHERE ItemID = ?";
+$stmt = $conn->prepare($itemQuery);
+$stmt->bind_param("i", $itemID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    echo "<div class='alert error'>Item not found.</div>";
+    exit();
+}
+
+$item = $result->fetch_assoc();
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -14,19 +36,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $quantity = $_POST['quantity'];
     $cost = $_POST['cost'];
 
-    $insertQuery = "INSERT INTO medicalsurgicalitem (ItemName, Type, VendorID, Quantity, cost) 
-                    VALUES ('$itemName', '$itemType', '$vendorID', '$quantity', '$cost')";
+    // Update the item in the database
+    $updateQuery = "UPDATE medicalsurgicalitem 
+                    SET ItemName = ?, Type = ?, VendorID = ?, Quantity = ?, cost = ? 
+                    WHERE ItemID = ?";
+    $updateStmt = $conn->prepare($updateQuery);
+    $updateStmt->bind_param("ssiiii", $itemName, $itemType, $vendorID, $quantity, $cost, $itemID);
 
-    if ($conn->query($insertQuery) === TRUE) {
-        echo "<div class='alert success'>Item added successfully!</div>";
-        // Redirect after 3 seconds
+    if ($updateStmt->execute()) {
+        echo "<div class='alert success'>Item updated successfully!</div>";
+        // Redirect after a short delay
         echo "<script>
                 setTimeout(function() {
-                    window.location.href = 'index.php'; //PAGE TO REDIRECT
+                    window.location.href = 'itemList.php'; //PAGE TO REDIRECT
                 }, 1000);
-            </script>";
+              </script>";
     } else {
-        echo "<div class='alert error'>Error: " . $insertQuery . "<br>" . $conn->error . "</div>";
+        echo "<div class='alert error'>Error: Could not update item. Please try again later.</div>";
     }
 }
 ?>
@@ -36,47 +62,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Medical/Surgical Item</title>
+    <title>Update Medical/Surgical Item</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body style="background-color: #F5F6FA;">
     <div class="bck-btn">
-        <a href="index.php"><button class="back-btn"><i class="fa-solid fa-backward"></i> Back</button></a>
+        <a href="itemList.php"><button class="back-btn"><i class="fa-solid fa-backward"></i> Back</button></a>
     </div>
     <br>
     <div class="container">
-        <h1>Item</h1>
+        <h1>Update Item</h1>
         <form method="post" action="">
             <!-- ITEM NAME -->
             <label for="itemName">Item Name:</label>
-            <input type="text" name="itemName" id="itemName" required>
+            <input type="text" name="itemName" id="itemName" value="<?= htmlspecialchars($item['ItemName']); ?>" required>
 
             <!-- ITEM TYPE -->
             <label for="itemType">Item Type:</label>
             <select name="itemType" id="itemType" required>
-                <option value="Surgical">Surgical</option>
-                <option value="Medical">Medical</option>
-                <option value="Medicine">Medicine</option>
+                <option value="Surgical" <?= $item['Type'] == 'Surgical' ? 'selected' : ''; ?>>Surgical</option>
+                <option value="Medical" <?= $item['Type'] == 'Medical' ? 'selected' : ''; ?>>Medical</option>
+                <option value="Medicine" <?= $item['Type'] == 'Medicine' ? 'selected' : ''; ?>>Medicine</option>
             </select>
 
             <!-- VENDOR -->
             <label for="vendor">Vendor:</label>
-            <input type="text" name="vendor" id="vendor" list="vendors" required>
+            <input type="text" name="vendor" id="vendor" list="vendors" value="<?= htmlspecialchars($item['VendorID']); ?>" required>
             <datalist id="vendors">
-                <?php while($row = $vendorResult->fetch_assoc()): ?>
-                    <option value="<?= $row['VendorID'] ?>"><?= $row['VendorName'] ?></option>
+                <?php while ($row = $vendorResult->fetch_assoc()): ?>
+                    <option value="<?= $row['VendorID'] ?>" <?= $item['VendorID'] == $row['VendorID'] ? 'selected' : ''; ?>><?= $row['VendorName'] ?></option>
                 <?php endwhile; ?>
             </datalist>
 
             <!-- QUANTITY -->
             <label for="quantity">Quantity:</label>
-            <input type="number" name="quantity" id="quantity" min="1" required>
+            <input type="number" name="quantity" id="quantity" min="1" value="<?= htmlspecialchars($item['Quantity']); ?>" required>
 
             <!-- COST -->
             <label for="cost">Cost (Php):</label>
-            <input type="number" name="cost" id="cost" step=".01" required>
+            <input type="number" name="cost" id="cost" step=".01" value="<?= htmlspecialchars($item['cost']); ?>" required>
 
-            <button type="submit" class="btn add-btn">Add</button>
+            <button type="submit" class="btn add-btn">Update</button>
         </form>
     </div>
     <br>
@@ -84,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </html>
 
 <style>
+/* Use the same styles as provided in the original code */
 body {
     font-family: 'Arial', sans-serif;
 }

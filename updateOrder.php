@@ -1,4 +1,5 @@
 <?php
+include 'sessioncheck.php';
 include 'conn.php';
 
 // Fetch items for the dropdown

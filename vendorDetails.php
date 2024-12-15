@@ -3,29 +3,22 @@ include 'sessioncheck.php';
 include 'conn.php';
 
 // Get the PatientID from the URL
-if (isset($_GET['item_id']) && is_numeric($_GET['item_id'])) {
-    $itemID = $_GET['item_id'];
+if (isset($_GET['vendor_id']) && is_numeric($_GET['vendor_id'])) {
+    $vendorID = $_GET['vendor_id'];
 
     // Query to fetch item details
-    $sql = "SELECT 
-                msi.*, v.VendorName 
-            FROM 
-                medicalsurgicalitem msi
-            JOIN 
-                vendor v ON msi.VendorID = v.VendorID 
-            WHERE 
-                msi.ItemID = $itemID";
+    $sql = "SELECT * from vendor WHERE VendorID = $vendorID";
 
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $item = $result->fetch_assoc();
+        $vendor = $result->fetch_assoc();
     } else {
-        echo "<p>No item found with ID $itemID.</p>";
+        echo "<p>No vendor found with ID $vendorID.</p>";
         exit;
     }
 } else {
-    echo "<p>Invalid Item ID.</p>";
+    echo "<p>Invalid Vendor ID.</p>";
     exit;
 }
 ?>
@@ -34,7 +27,7 @@ if (isset($_GET['item_id']) && is_numeric($_GET['item_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item Details</title>
+    <title>Vendor Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -82,15 +75,13 @@ if (isset($_GET['item_id']) && is_numeric($_GET['item_id'])) {
 </head>
 <body>
     <div class="details-container">
-        <h1>Item Details</h1>
-        <div class="detail"><strong>Item ID:</strong> <?= htmlspecialchars($item['ItemID']) ?></div>
-        <div class="detail"><strong>Item Name:</strong> <?= htmlspecialchars($item['ItemName']) ?></div>
-        <div class="detail"><strong>Item Type:</strong> <?= htmlspecialchars($item['Type']) ?></div>
-        <div class="detail"><strong>Vendor Name:</strong> <?= htmlspecialchars($item['VendorName']) ?></div>
-        <div class="detail"><strong>Quantity:</strong> <?= htmlspecialchars($item['Quantity']) ?></div>
-        <div class="detail"><strong>Cost:</strong> <?= htmlspecialchars($item['cost']) ?> PHP</div>
+        <h1>Vendor Details</h1>
+        <div class="detail"><strong>Vendor ID:</strong> <?= htmlspecialchars($vendor['VendorID']) ?></div>
+        <div class="detail"><strong>Vendor Name:</strong> <?= htmlspecialchars($vendor['VendorName']) ?></div>
+        <div class="detail"><strong>Contact Info:</strong> <?= htmlspecialchars($vendor['ContactInfo']) ?></div>
+        <div class="detail"><strong>Address:</strong> <?= htmlspecialchars($vendor['Address']) ?></div>
         <div class="back-link">
-            <a href="itemList.php">Back to List</a>
+            <a href="vendorList.php">Back to List</a>
         </div>
     </div>
 </body>

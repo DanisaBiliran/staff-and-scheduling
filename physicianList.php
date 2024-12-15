@@ -1,11 +1,14 @@
 <?php
+    include 'sessioncheck.php';
     include 'conn.php';
 
     // Capture the search query if available
     $search = isset($_GET['search']) ? $_GET['search'] : '';
 
     // Modify the SQL query to include filtering
-    $sql = "SELECT * FROM physician";
+    $sql = "SELECT p.*, f.FacilityName
+            FROM physician p
+            JOIN facility f ON p.FacilityID = f.FacilityID";
     if (!empty($search)) {
         $sql .= " WHERE PhysicianID LIKE '%$search%' OR PhysicianName LIKE '%$search%' or Specialty LIKE '%$search%'";
     }
@@ -134,7 +137,7 @@
             <!-- Search Form -->
             <form method="GET" action="">
                 <div class="searchbox">
-                    <input type="text" name="search" id="search" placeholder="Search patients..." value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="text" name="search" id="search" placeholder="Search physician..." value="<?php echo htmlspecialchars($search); ?>">
                     <button type="submit">Search</button>
                 </div>
             </form>
@@ -156,11 +159,11 @@
                                     <td>$row[PhysicianID]</td>
                                     <td>$row[PhysicianName]</td>
                                     <td>$row[Specialty]</td>
-                                    <td>$row[FacilityID]</td>
+                                    <td>$row[FacilityName]</td>
                                     <td>
-                                        <a class='btn view' href=''>View</a>
-                                        <a class='btn update' href=''>Update</a> 
-                                        <a class='btn delete' href=''>Delete</a>
+                                        <a class='btn view' href='physicianDetails.php?physician_id={$row['PhysicianID']}'>View</a>
+                                        <a class='btn update' href='updatePhysician.php?physician_id={$row['PhysicianID']}'>Update</a> 
+                                        <a class='btn delete' href='deletePhysician.php?id={$row['PhysicianID']}' onclick=\"return confirm('Are you sure you want to delete this Physician?')\">Delete</a>
                                     </td>
                                 </tr>
                             ";
@@ -171,5 +174,14 @@
                 ?>
             </table>
         </div>
-    </body>
+    </body> 
 </html>
+<script>
+    document.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            if (!confirm('Are you really sure?')) {
+                e.preventDefault(); // Prevent navigation if the user cancels
+            }
+        });
+    });
+</script>
