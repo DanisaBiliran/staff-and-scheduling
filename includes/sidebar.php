@@ -11,11 +11,6 @@ $menuItems = [
     'label' => 'Wards',
     'href' => '/staff-and-scheduling/wardList.php',
   ],
-  [
-    'icon' => 'calendar',
-    'label' => 'Scheduling',
-    'href' => '/staff-and-scheduling/scheduling.php',
-  ],
 
   [
     'icon' => 'list',
