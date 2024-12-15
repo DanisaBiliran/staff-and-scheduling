@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             '$orderType', '$status', '$itemID')";
 
     if ($conn->query($insertQuery) === TRUE) {
-        echo "<div class='alert success'>Order placed successfully!</div>";
+        echo "<div class='alert success'>Order updated successfully!</div>";
         // Redirect after 3 seconds
         echo "<script>
                 setTimeout(function() {
