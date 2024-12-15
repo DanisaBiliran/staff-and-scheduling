@@ -47,13 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Form</title>
+    <title>Update Order</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body style="background-color: #F5F6FA;">
     <br>
     <div class="container">
-        <h1>Order Form</h1>
+        <h1>Update Order</h1>
         <form method="post" action="">
             <!-- ITEM -->
             <label for="item">Item:</label>

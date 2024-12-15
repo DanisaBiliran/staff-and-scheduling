@@ -36,7 +36,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Details</title>
+    <title>Order Details</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -84,7 +84,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 </head>
 <body>
     <div class="details-container">
-        <h1>Patient Details</h1>
+        <h1>Order Details</h1>
         <div class="detail"><strong>Order ID:</strong> <?= htmlspecialchars($order['OrderID']) ?></div>
         <div class="detail"><strong>Order Date:</strong> <?= htmlspecialchars($order['OrderDate']) ?></div>
         <div class="detail"><strong>Order Type:</strong> <?= htmlspecialchars($order['OrderType']) ?></div>

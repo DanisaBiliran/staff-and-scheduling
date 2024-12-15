@@ -136,14 +136,13 @@
                     <button type="submit">Search</button>
                 </div>
             </form>
-
-            <!-- Patient Table -->
+            <a href="index.php">Go Back</a>
+            <!-- Ward Table -->
             <table>
                 <tr>
                     <th>Ward ID</th>
                     <th>Ward Name</th>
                     <th>Specialty</th>
-                    <th>Action</th>
                 </tr>
                 <?php
                     if ($result->num_rows > 0) {
@@ -153,11 +152,6 @@
                                     <td>$row[WardID]</td>
                                     <td>$row[WardName]</td>
                                     <td>$row[Specialty]</td>
-                                    <td>
-                                        <a class='btn view' href=''>View</a>
-                                        <a class='btn update' href=''>Update</a> 
-                                        <a class='btn delete' href=''>Delete</a>
-                                    </td>
                                 </tr>
                             ";
                         }
