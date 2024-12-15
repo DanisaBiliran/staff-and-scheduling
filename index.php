@@ -1,5 +1,6 @@
 <?php
   include("chuchu.php");
+  include 'conn.php';
 ?>
 <?php session_start() ?>
 
@@ -10,91 +11,121 @@
 <?php require_once __DIR__ . "/classes/scheduling.class.php"; ?>
 <?php require_once __DIR__ . "/includes/head.php"; ?>
 
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
+<style>
+  canvas{
+    width: 40%;
+  }
+</style>
 
 <body>
   <div class="drawer lg:drawer-open">
     <input id="sidebar" type="checkbox" class="drawer-toggle" />
-
     <div class="drawer-content bg-base-200">
       <?php require_once __DIR__ . "/includes/navbar.php"; ?>
+      <div class="flex flex-wrap gap-4 justify-end p-5 bg-base-100 rounded shadow">
+        <a href="patientDetailsForm.php">
+          <button id="CreatePatient" onclick="modal.showModal()" class="btn btn-primary">
+          <i data-lucide="plus-circle" class="h-5 w-5"></i>
+          Register Patient
+        </button>
+        </a>
+        <a href="staff.php">
+          <button id="CreatePatient" onclick="modal.showModal()" class="btn btn-primary">
+          <i data-lucide="plus-circle" class="h-5 w-5"></i>
+          Register Staff
+        </button>
+        </a>
+        <a href="vendorForm.php">
+          <button id="CreateVendor" onclick="modal.showModal()" class="btn btn-primary">
+          <i data-lucide="plus-circle" class="h-5 w-5"></i>
+          Add Vendor
+          </button>
+        </a>
+        <a href="physician.php">
+          <button id="CreatePhysician" onclick="modal.showModal()" class="btn btn-primary">
+          <i data-lucide="plus-circle" class="h-5 w-5"></i>
+          Add Physician
+          </button>
+        </a>
+        <a href="medicalorder.php">
+          <button id="CreateMedicalOrder" onclick="modal.showModal()" class="btn btn-primary">
+          <i data-lucide="plus-circle" class="h-5 w-5"></i>
+          Place Order
+          </button>
+        </a>
+        <a href="medicalSurgicalItem.php">
+          <button id="CreateMedicalItem" onclick="modal.showModal()" class="btn btn-primary">
+          <i data-lucide="plus-circle" class="h-5 w-5"></i>
+          Add Item
+        </button>
+        </a>
+</div>
+<section class="px-5 pt-5 pb-5 container">
+  <div class="grid grid-cols-1 m-5 sm:grid-cols-3 gap-3">
+    <div class="border rounded bg-base-100 p-4">
+      <?php $patients = new Patients(); ?>
+      <h1>Total Patients</h1>
+      <b></b>
+      <h1 class="font-bold text-2xl"><?php echo $total_patients; ?></h1>
+    </div>
 
-      <section class="px-4 pt-4 pb-4 container mx-auto">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="border rounded bg-base-100 p-4">
-            <?php $patients = new Patients(); ?>
-            <h1>Total Patients</h1>
-            <b></b>
-            <h1 class="font-bold text-2xl"><?php echo $total_patients; ?></h1>
-            <img src="images/inpatient.png" alt="">
-          </div>
+    <div class="border rounded bg-base-100 p-4">
+      <?php $scheduling = new Scheduling(); ?>
+      <h1>Total number of Physician</h1>
+      <h1 class="font-bold text-2xl"><?php echo $total_physicians; ?></h1>
+    </div>
 
-          <?php
-                // DATA for pie chart
-                $medical_count = isset($inventory_by_type['Medical']) ? $inventory_by_type['Medical'] : 0;
-                $surgical_count = isset($inventory_by_type['Surgical']) ? $inventory_by_type['Surgical'] : 0;
-            ?>
+    <div class="border rounded bg-base-100 p-4">
+      <?php $scheduling = new Scheduling(); ?>
+      <h1>Available Staff</h1>
+      <h1 class="font-bold text-2xl"><b><?php echo $available_staff; ?></b></h1>
+    </div>
+
+    <div class="border rounded bg-base-100 p-4">
+      <?php $scheduling = new Scheduling(); ?>
+      <h1>Patients by Gender</h1>
+      <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
+      <canvas id="genderPieChart" class="w-48 h-48 mx-auto"></canvas>
+    </div>
+
+    <?php
+    // DATA for pie chart
+    $medical_count = isset($inventory_by_type['Medical']) ? $inventory_by_type['Medical'] : 0;
+    $surgical_count = isset($inventory_by_type['Surgical']) ? $inventory_by_type['Surgical'] : 0;
+    $medicine_count = isset($inventory_by_type['Medicine']) ? $inventory_by_type['Medicine'] : 0;
+    ?>
+
+    <div class="border rounded bg-base-100 p-4">
+      <h1>Inventory Stocks</h1>
+      <p class="font-bold text-2">Medical: <h1><?= $medical_count; ?></h1></p>
+      <p class="font-bold text-2">Surgical: <h1><?= $surgical_count; ?></h1></p>
+      <p class="font-bold text-2">Medicine: <h1><?= $medicine_count; ?></h1></p>
+      <canvas id="inventoryPieChart" class="w-48 h-48 mx-auto"></canvas>
+    </div>
+
+    <div class="border rounded bg-base-100 p-4">
+      <?php $scheduling = new Scheduling(); ?>
+      <h1>Patients by Status</h1>
+      <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
+      <canvas id="statusPieChart" class="w-48 h-48 mx-auto"></canvas>
+    </div>
+  </div>
+</section>
 
 
-
-          <div class="border rounded bg-base-100 p-4">
-            <?php $wards = new Wards(); ?>
-            <h1>Total Wards</h1>
-            <h1 class="font-bold text-2xl"><?= count($wards->fetchAll()) ?></h1>
-            <img src="images/material-symbols--ward-rounded.png" alt="">
-          </div>
-          <div class="border rounded bg-base-100 p-4">
-            <?php $scheduling = new Scheduling(); ?>
-            <h1>Inventory Stocks</h1>
-            <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
-            <canvas id="inventoryPieChart"></canvas>
-          </div>
-            <!-- WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE -->
-          <div class="border rounded bg-base-100 p-4">
-            <?php $scheduling = new Scheduling(); ?>
-            <h1>Total number of Physician</h1>
-            <h1 class="font-bold text-2xl"><?php echo $total_physicians; ?></h1>
-            <img src="images/staffs.png" alt="">
-          </div>
-
-          <?php
-                //DATA for pie chart
-                    $male_count = isset($patients_by_gender['M']) ? $patients_by_gender['M'] : 0;
-                    $female_count = isset($patients_by_gender['F']) ? $patients_by_gender['F'] : 0;
-                ?>
-
-          <div class="border rounded bg-base-100 p-4">
-            <?php $scheduling = new Scheduling(); ?>
-            <h1>Patients by Gender</h1>
-            <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
-            <canvas id="genderPieChart"></canvas>
-          </div>
-
-          <div class="border rounded bg-base-100 p-4">
-            <?php $scheduling = new Scheduling(); ?>
-            <h1>Available Staff</h1>
-            <h1 class="font-bold text-2xl"><b><?php echo $available_staff; ?></b></h1>
-            <img src="images/staffs.png" alt="">
-          </div>
-            <!-- WEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE -->
-          <div class="border rounded bg-base-100 p-4">
-            <?php $scheduling = new Scheduling(); ?>
-            <h1>Scheduled Patients</h1>
-            <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
-            <img src="images/ant-design--schedule-outlined.png" alt="">
-          </div>
-
-          <div class="border rounded bg-base-100 p-4">
-            <?php $scheduling = new Scheduling(); ?>
+<!--<div class="border rounded bg-base-100 p-4">
+<?php $scheduling = new Scheduling(); ?>
             <h1>Patients by Status</h1>
             <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
             <canvas id="statusPieChart"></canvas>
           </div>
         </div>
-      </section>
-      <section class="px-4 pb-4 container mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
+      </section> -->
+
+      <!-- <section class="px-4 pb-4 container mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="border rounded bg-base-100 p-4 overflow-x-scroll">
           <?php $wards = new Wards(); ?>
           <h1 class="font-medium mb-4">Ward Availability</h1>
@@ -164,7 +195,7 @@
             </tbody>
           </table>
         </div>
-      </section>
+      </section> -->
     </div>
 
     
@@ -185,15 +216,17 @@
                 labels: ['Medical', 'Surgical', 'Medicine'],
                 datasets: [{
                     label: 'Inventory Distribution',
-                    data: [<?php echo $medical_count; ?>, <?php echo $surgical_count; ?>],
+                    data: [<?php echo $medical_count; ?>, <?php echo $surgical_count; ?>, <?php echo $medicine_count?>],
                     backgroundColor: [
                         '#00D89E',
-                        '#752BDF'
+                        '#752BDF',
+                        '#FF8B4F'
 
                     ],
                     borderColor: [
                         '#00D89E',
-                        '#752BDF'
+                        '#752BDF',
+                        '#FF8B4F'
                     ],
                     borderWidth: 1
                 }]
@@ -283,7 +316,11 @@
                 }
             }
         });
+
+      // For the buttons
+      
   </script>
+  
 </body>
 
 </html>

@@ -7,14 +7,9 @@ $menuItems = [
     'href' => '/staff-and-scheduling/index.php',
   ],
   [
-    'icon' => 'airplay',
-    'label' => 'Create Patient',
-    'href' => '/staff-and-scheduling/patientDetailsForm.php',
-  ],
-  [
     'icon' => 'table-2',
     'label' => 'Wards',
-    'href' => '/staff-and-scheduling/wards.php',
+    'href' => '/staff-and-scheduling/wardList.php',
   ],
   [
     'icon' => 'calendar',

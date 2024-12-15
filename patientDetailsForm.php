@@ -49,10 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Patient</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body style="background-color: rgb(231, 232, 236);">
     <br>
+    <div class="bck-btn">
+        <a href="index.php"><button class="back-btn"><i class="fa-solid fa-backward"></i> Back</button></a>
+    </div>
     <div class="container">
         <h1>Add Patient</h1>
         <form method="post" action="">
@@ -111,7 +115,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     body {
         font-family: 'Arial', sans-serif;
     }
-
+    .bck-btn{
+        margin-left: 15px;
+        width: 10%;
+    }
+    .back-btn{
+        width: 100%;
+        padding: 10px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        background-color: #00D89E;
+        cursor: pointer;
+    }
+    .back-btn:hover{
+        transition: 0.3s;
+        scale: 1.1;
+        box-shadow: 1px 1px 1px black;
+    }
     .container {
         max-width: 600px;
         margin: auto;
@@ -162,7 +183,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     .btn:hover {
-        background-color: #009C7D; 
+        transition: 0.3s;
+        background-color: #00D89E; 
         scale: 1.1;
         box-shadow: 3px 3px 10px black;
     }

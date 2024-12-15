@@ -42,6 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="styles.css">
 </head>
 <body style="background-color: #F5F6FA;">
+        <div class="bck-btn">
+        <a href="index.php"><button class="back-btn"><i class="fa-solid fa-backward"></i> Back</button></a>
+        </div>
     <br>
     <div class="container">
         <h1>Add Vendor</h1>
@@ -62,6 +65,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </html>
 
 <style>
+    .bck-btn{
+        margin-left: 15px;
+        width: 10%;
+    }
+    .back-btn{
+        width: 100%;
+        padding: 10px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        background-color: #00D89E;
+        cursor: pointer;
+    }
+    .back-btn:hover{
+        transition: 0.3s;
+        scale: 1.1;
+        box-shadow: 1px 1px 1px black;
+    }
 body {
     font-family: 'Arial', sans-serif;
 }
@@ -109,7 +130,8 @@ input[type='text']:focus {
 }
 
 .btn:hover {
-    background-color: #009C7D; 
+    transition: 0.3s;
+    background-color: #00D89E; 
     scale: 1.1;
     box-shadow: 3px 3px 10px black;
 }

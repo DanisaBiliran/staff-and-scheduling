@@ -10,6 +10,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
 // Fetch items for the dropdown
 $itemQuery = "SELECT ItemID, ItemName FROM medicalsurgicalitem WHERE Type='Medicine'";
 $itemResult = $conn->query($itemQuery);
@@ -22,33 +23,6 @@ $physicianResult = $conn->query($physicianQuery);
 $patientQuery = "SELECT PatientID, PatientName FROM patient";
 $patientResult = $conn->query($patientQuery);
 
-// Initialize variables
-$orderID = $itemID = $orderType = $quantity = $orderedBy = $writtenBy = $status = '';
-$isEdit = false;
-
-// Check if editing an existing order
-if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
-    $orderID = $_GET['order_id'];
-    $isEdit = true;
-
-    // Fetch the order details
-    $orderQuery = "SELECT * FROM medicalorder WHERE OrderID = $orderID";
-    $orderResult = $conn->query($orderQuery);
-
-    if ($orderResult->num_rows > 0) {
-        $order = $orderResult->fetch_assoc();
-        $itemID = $order['Item_FK'];
-        $orderType = $order['OrderType'];
-        $quantity = $order['Quantity'];
-        $orderedBy = $order['PatientID_FK'];
-        $writtenBy = $order['PhysicianID_FK'];
-        $status = $order['Status'];
-    } else {
-        echo "<div class='alert error'>Order not found.</div>";
-        exit;
-    }
-}
-
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $itemID = $_POST['item'];
@@ -58,27 +32,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $writtenBy = $_POST['writtenBy'];
     $status = $_POST['status'];
 
-    if ($isEdit) {
-        // Update query
-        $updateQuery = "UPDATE medicalorder SET 
-                        Item_FK = '$itemID', 
-                        OrderType = '$orderType', 
-                        Quantity = '$quantity', 
-                        PatientID_FK = '$orderedBy', 
-                        PhysicianID_FK = (SELECT PhysicianID FROM physician WHERE PhysicianName = '$writtenBy'), 
-                        Status = '$status' 
-                        WHERE OrderID = $orderID";
+    $insertQuery = "INSERT INTO medicalorder (PatientID_FK, PhysicianID_FK, OrderType, Status, Item_FK) 
+                    VALUES ('$orderedBy', 
+                            (SELECT PhysicianID FROM physician WHERE PhysicianName='$writtenBy'), 
+                            '$orderType', '$status', '$itemID')";
 
-        if ($conn->query($updateQuery) === TRUE) {
-            echo "<div class='alert success'>Order updated successfully!</div>";
-            echo "<script>
-                    setTimeout(function() {
-                        window.location.href = 'index.php'; // PAGE TO REDIRECT
-                    }, 1000);
-                  </script>";
-        } else {
-            echo "<div class='alert error'>Error: " . $updateQuery . "<br>" . $conn->error . "</div>";
-        }
+    if ($conn->query($insertQuery) === TRUE) {
+        echo "<div class='alert success'>Order placed successfully!</div>";
+        // Redirect after 3 seconds
+        echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'index.php'; //PAGE TO REDIRECT
+                }, 2000);
+            </script>";
+    } else {
+        echo "<div class='alert error'>Error: " . $insertQuery . "<br>" . $conn->error . "</div>";
     }
 }
 ?>
@@ -88,43 +56,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $isEdit ? 'Update Order' : 'New Order' ?></title>
+    <title>Order Form</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background-color: #F5F6FA;">
+<body style="background-color: rgb(207, 174, 251);">
     <br>
     <div class="container">
-        <h1><?= $isEdit ? 'Update Order' : 'New Order' ?></h1>
+        <h1>Order Form</h1>
         <form method="post" action="">
             <!-- ITEM -->
             <label for="item">Item:</label>
             <select name="item" id="item" required>
                 <?php while($row = $itemResult->fetch_assoc()): ?>
-                    <option value="<?= $row['ItemID'] ?>" <?= $row['ItemID'] == $itemID ? 'selected' : '' ?>>
-                        <?= $row['ItemName'] ?>
-                    </option>
+                    <option value="<?= $row['ItemID'] ?>"><?= $row['ItemName'] ?></option>
                 <?php endwhile; ?>
             </select>
 
             <!-- ORDER TYPE -->
             <label for="orderType">Order Type:</label>
             <select name="orderType" id="orderType" required>
-                <option value="diagnostic" <?= $orderType == 'diagnostic' ? 'selected' : '' ?>>Diagnostic</option>
-                <option value="drugs" <?= $orderType == 'drugs' ? 'selected' : '' ?>>Drugs</option>
+                <option value="diagnostic">Diagnostic</option>
+                <option value="drugs">Drugs</option>
             </select>
 
             <!-- QUANTITY -->
             <label for="quantity">Quantity:</label>
-            <input type="number" name="quantity" id="quantity" min="1" value="<?= htmlspecialchars($quantity) ?>" required>
+            <input type="number" name="quantity" id="quantity" min="1" required>
 
             <!-- ORDERED BY -->
             <label for="orderedBy">Ordered By (Patient ID):</label>
-            <input type="text" name="orderedBy" id="orderedBy" list="patients" value="<?= htmlspecialchars($orderedBy) ?>" required>
+            <input type="text" name="orderedBy" id="orderedBy" list="patients" required>
             <datalist id="patients">
                 <?php while($row = $patientResult->fetch_assoc()): ?>
-                    <option value="<?= $row['PatientID'] ?>" <?= $row['PatientID'] == $orderedBy ? 'selected' : '' ?>>
-                        <?= $row['PatientName'] ?>
-                    </option>
+                    <option value="<?= $row['PatientID'] ?>"><?= $row['PatientName'] ?></option>
                 <?php endwhile; ?>
             </datalist>
 
@@ -132,18 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="writtenBy">Written By (Physician Name):</label>
             <select name="writtenBy" id="writtenBy" required>
                 <?php while($row = $physicianResult->fetch_assoc()): ?>
-                    <option value="<?= $row['PhysicianName'] ?>" <?= $row['PhysicianName'] == $writtenBy ? 'selected' : '' ?>>
-                        <?= $row['PhysicianName'] ?>
-                    </option>
+                    <option value="<?= $row['PhysicianName'] ?>"><?= $row['PhysicianName'] ?></option>
                 <?php endwhile; ?>
             </select>
 
             <!-- ORDER STATUS -->
             <label for="status">Order Status:</label>
             <select name="status" id="status" required>
-                <option value="pending" <?= $status == 'pending' ? 'selected' : '' ?>>Pending</option>
-                <option value="cancelled" <?= $status == 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
-                <option value="completed" <?= $status == 'completed' ? 'selected' : '' ?>>Completed</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="completed">Completed</option>
             </select>
 
             <button type="submit" class="btn confirm-btn">Confirm</button>
@@ -153,3 +115,99 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <br>
 </body>
 </html>
+
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    background-color:white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #752BDF;
+    font-size: 2.5em;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input[type='text'], input[type='number'], select {
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid rgb(177, 127, 248);
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+input[type='text'], input[type='number'] {
+    width: calc(95% - 20px);
+}
+
+select {
+    width: calc(100% - 20px);
+}
+
+input[type='text']:focus, input[type='number']:focus, select:focus {
+    border-color: #752BDF;
+}
+
+/* BUTTONS */
+.btn {
+    background-color:rgb(14, 192, 14);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #009C7D;
+    scale: 1.1;
+    box-shadow: 3px 3px 10px black;
+}
+
+.back-btn {
+   background-color: #752BDF; 
+}
+
+.back-btn:hover {
+    background-color: #5C1BBF;
+    scale: 1.1;
+    box-shadow: 3px 3px 10px black;
+}
+
+/* WHEN CONFIRM BUTTON IS PRESSED */
+.alert {
+   padding: 10px;
+   margin-top: 15px;
+   border-radius: 5px;
+   text-align: center;
+}
+
+.success {
+   background-color: #d4edda; 
+   color: #155724; 
+   border-color: #c3e6cb; 
+}
+
+.error {
+   background-color: #f8d7da; 
+   color: #721c24; 
+   border-color: #f5c6cb; 
+}
+</style>
