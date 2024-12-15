@@ -4,12 +4,14 @@ session_start();
 
 if (isset($_SESSION["user_id"])) {
   header("Location: ./index.php");
+  exit();
 }
 
+$error = ""; // Initialize error message
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $auth = new Authentication();
-  $auth->signIn($_POST);
+  $error = $auth->signIn($_POST); // Capture the error message
 }
 
 ?>
@@ -29,13 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="bg-base-200">
   <main class="container mx-auto h-screen w-full flex justify-center items-center">
     <div class="max-w-sm w-full border bg-base-100 rounded-lg flex flex-col items-center p-6">
-    <h1 style="font-size: 1.2em; text-align: center; font-weight: bold;">Mountain View Community Hospital</h1>
       <div class="flex flex-col items-center mb-4">
         <i data-lucide="log-in" class="h-8 w-8 text-primary"></i>
         <h1 class="text-xl font-bold">Welcome!</h1>
         <p class="text-gray-400">Sign in to your account</p>
       </div>
       <form method="POST" class="flex flex-col gap-4 items-center w-full">
+        <?php if (!empty($error)): ?>
+          <div class="alert alert-error shadow-lg w-full">
+            <div>
+              <i data-lucide="alert-circle" class="h-5 w-5"></i>
+              <span><?php echo htmlspecialchars($error); ?></span>
+            </div>
+          </div>
+        <?php endif; ?>
         <label class="form-control w-full">
           <div class="label">
             <span class="label-text">Username</span>
