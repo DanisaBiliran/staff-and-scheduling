@@ -87,7 +87,7 @@
     <div class="border rounded bg-base-100 p-4">
       <?php $scheduling = new Scheduling(); ?>
       <h1>Patients by Gender</h1>
-      <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
+      <!-- <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1> -->
       <canvas id="genderPieChart" class="w-48 h-48 mx-auto"></canvas>
     </div>
 
@@ -100,16 +100,13 @@
 
     <div class="border rounded bg-base-100 p-4">
       <h1>Inventory Stocks</h1>
-      <p class="font-bold text-2">Medical: <h1><?= $medical_count; ?></h1></p>
-      <p class="font-bold text-2">Surgical: <h1><?= $surgical_count; ?></h1></p>
-      <p class="font-bold text-2">Medicine: <h1><?= $medicine_count; ?></h1></p>
       <canvas id="inventoryPieChart" class="w-48 h-48 mx-auto"></canvas>
     </div>
 
     <div class="border rounded bg-base-100 p-4">
       <?php $scheduling = new Scheduling(); ?>
+
       <h1>Patients by Status</h1>
-      <h1 class="font-bold text-2xl"><?= count(value: $scheduling->fetchAll()) ?></h1>
       <canvas id="statusPieChart" class="w-48 h-48 mx-auto"></canvas>
     </div>
   </div>
@@ -286,7 +283,6 @@
             data: {
                 labels: ['Discharged', 'Admitted'],
                 datasets: [{
-                    label: 'Patient Status',
                     data: [<?php echo $discharged_count; ?>, <?php echo $admitted_count; ?>],
                     backgroundColor: [
                         '#00D89E',
@@ -305,13 +301,12 @@
                     legend: {
                         position: 'top',
                         labels: {
-                            color: 'white'
+  
                         }
                     },
                     title: {
                         display: true,
                         text: 'Patients by Status',
-                        color: 'white'
                     }
                 }
             }
